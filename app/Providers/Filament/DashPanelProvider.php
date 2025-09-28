@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Auth;
 use Backstage\FilamentMails\Facades\FilamentMails;
 use Backstage\FilamentMails\FilamentMailsPlugin;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
@@ -62,7 +63,22 @@ class DashPanelProvider extends PanelProvider
             ->plugins([
                 FilamentLoggerPlugin::make(),
                 FilamentLogViewerPlugin::make(),
-                FilamentMailsPlugin::make(),
+                FilamentMailsPlugin::make()->canManageMails(function () {
+                    $user = Auth::user();
+
+                    // Allow access for users with specific roles
+                    if ($user->hasRole('admin')) {
+                        return true;
+                    }
+
+                    // Allow access for users with specific permissions
+                    if ($user->hasPermissionTo('manage mails')) {
+                        return true;
+                    }
+
+                    // Restrict access for all other users
+                    return false;
+                }),
             ])
             ->routes(fn () => FilamentMails::routes());
     }

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class FilamentAdminSeeder extends Seeder
 {
@@ -14,11 +15,13 @@ class FilamentAdminSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
         ]);
+
+        $user->assignRole('admin');
     }
 }
