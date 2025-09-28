@@ -28,14 +28,11 @@ class DashPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel
+        $panel =  $panel
             ->default()
             ->id('dash')
-            ->path('dash')
-            ->login()
-            ->colors([
-                'primary' => Color::Amber,
-            ])
+            ->path(config('filament-php.route'))
+            ->colors(config('filament-php.colors'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
@@ -81,5 +78,19 @@ class DashPanelProvider extends PanelProvider
                 }),
             ])
             ->routes(fn () => FilamentMails::routes());
+
+        if (config('filament-php.enable_login')) {
+            $panel->login();
+        }
+
+        if (config('filament-php.enable_registration')) {
+            $panel->register();
+        }
+
+        if (config('filament-php.enable_profile')) {
+            $panel->profile();
+        }
+
+        return $panel;
     }
 }
