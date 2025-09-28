@@ -60,21 +60,16 @@ class DashPanelProvider extends PanelProvider
             ->plugins([
                 FilamentLoggerPlugin::make(),
                 FilamentLogViewerPlugin::make(),
-                FilamentMailsPlugin::make()->canManageMails(function () {
+                FilamentMailsPlugin::make()->canManageMails(function (): bool {
                     $user = Auth::user();
 
                     // Allow access for users with specific roles
                     if ($user->hasRole('admin')) {
                         return true;
                     }
-
                     // Allow access for users with specific permissions
-                    if ($user->hasPermissionTo('manage mails')) {
-                        return true;
-                    }
-
                     // Restrict access for all other users
-                    return false;
+                    return (bool) $user->hasPermissionTo('manage mails');
                 }),
             ])
             ->routes(fn () => FilamentMails::routes());
