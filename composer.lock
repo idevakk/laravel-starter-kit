@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bae273ecc05278912300707444956065",
+    "content-hash": "418b6fd827d97cc67411610b6cff80a2",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -71,6 +71,159 @@
                 "source": "https://github.com/AnourValar/eloquent-serialize/tree/1.3.4"
             },
             "time": "2025-07-30T15:45:57+00:00"
+        },
+        {
+            "name": "backstage/filament-mails",
+            "version": "v3.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/backstagephp/filament-mails.git",
+                "reference": "24d5d50c5848f8e8d06a5f9f37b891aa9cc5e8b4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/backstagephp/filament-mails/zipball/24d5d50c5848f8e8d06a5f9f37b891aa9cc5e8b4",
+                "reference": "24d5d50c5848f8e8d06a5f9f37b891aa9cc5e8b4",
+                "shasum": ""
+            },
+            "require": {
+                "backstage/laravel-mails": "^2.0",
+                "filament/filament": "^4.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.16",
+                "nunomaduro/collision": "^8.8.0",
+                "orchestra/testbench": "^9.0|^10.0",
+                "pestphp/pest": "^3.7",
+                "pestphp/pest-plugin-arch": "^3.1.0",
+                "pestphp/pest-plugin-laravel": "^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "FilamentMails": "Backstage\\FilamentMails\\Facades\\FilamentMails"
+                    },
+                    "providers": [
+                        "Backstage\\FilamentMails\\FilamentMailsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Backstage\\FilamentMails\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Baspa",
+                    "email": "hello@baspa.dev",
+                    "role": "Developer"
+                }
+            ],
+            "description": "View logged mails and events in a beautiful Filament UI.",
+            "homepage": "https://github.com/backstagephp/filament-mails",
+            "keywords": [
+                "backstagephp",
+                "filament-mails",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/backstagephp/filament-mails/issues",
+                "source": "https://github.com/backstagephp/filament-mails"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/vormkracht10",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-09-26T08:39:10+00:00"
+        },
+        {
+            "name": "backstage/laravel-mails",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/backstagephp/laravel-mails.git",
+                "reference": "b590728f2295be781ea19abd0275783d1598ca5c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/backstagephp/laravel-mails/zipball/b590728f2295be781ea19abd0275783d1598ca5c",
+                "reference": "b590728f2295be781ea19abd0275783d1598ca5c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^10.0 || ^11.0 || ^12.0",
+                "laravel/helpers": "^1.7.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel-notification-channels/discord": "^1.6",
+                "laravel-notification-channels/telegram": "^4.0 || ^5.0 || ^6.0",
+                "laravel/pint": "^1.17.0",
+                "laravel/slack-notification-channel": "^2.5 || ^3.3.2",
+                "nunomaduro/collision": "^7.5.0|^8.4",
+                "orchestra/testbench": "^8.5.0|^9.4.0",
+                "pestphp/pest": "^3.0",
+                "pestphp/pest-plugin-laravel": "^3.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpunit/phpunit": "^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Backstage\\Mails\\MailsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Backstage\\Mails\\": "src",
+                    "Backstage\\Mails\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark van Eijk",
+                    "email": "mark@vormkracht10.nl",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel Mails can collect everything you might want to track about the mails that has been sent by your Laravel app.",
+            "homepage": "https://github.com/backstagephp/laravel-mails",
+            "keywords": [
+                "backstagephp",
+                "laravel",
+                "laravel-mails"
+            ],
+            "support": {
+                "issues": "https://github.com/backstagephp/laravel-mails/issues",
+                "source": "https://github.com/backstagephp/laravel-mails/tree/v2.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/vormkracht10",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-07-22T08:08:52+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -2567,6 +2720,63 @@
                 "source": "https://github.com/laravel/framework"
             },
             "time": "2025-09-23T15:33:04+00:00"
+        },
+        {
+            "name": "laravel/helpers",
+            "version": "v1.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/helpers.git",
+                "reference": "d0094b4bc4364560c8ee3a9e956596d760d4afab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/helpers/zipball/d0094b4bc4364560c8ee3a9e956596d760d4afab",
+                "reference": "d0094b4bc4364560c8ee3a9e956596d760d4afab",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.8.0|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0",
+                "php": "^7.2.0|^8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0|^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                },
+                {
+                    "name": "Dries Vints",
+                    "email": "dries@laravel.com"
+                }
+            ],
+            "description": "Provides backwards compatibility for helpers in the latest Laravel release.",
+            "keywords": [
+                "helpers",
+                "laravel"
+            ],
+            "support": {
+                "source": "https://github.com/laravel/helpers/tree/v1.8.1"
+            },
+            "time": "2025-09-02T15:31:25+00:00"
         },
         {
             "name": "laravel/pint",

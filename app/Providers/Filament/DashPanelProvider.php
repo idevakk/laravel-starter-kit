@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use Backstage\FilamentMails\Facades\FilamentMails;
+use Backstage\FilamentMails\FilamentMailsPlugin;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -60,6 +62,8 @@ class DashPanelProvider extends PanelProvider
             ->plugins([
                 FilamentLoggerPlugin::make(),
                 FilamentLogViewerPlugin::make(),
-            ]);
+                FilamentMailsPlugin::make(),
+            ])
+            ->routes(fn () => FilamentMails::routes());
     }
 }
