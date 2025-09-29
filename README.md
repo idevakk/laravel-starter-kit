@@ -14,6 +14,7 @@ Ideal for developers who want to skip boilerplate setup and jump straight into b
 * ✅ Roles & Permissions (Spatie)
 * ✅ Activity Logging
 * ✅ Mail & Log Viewer
+* ✅ **Database Config Manager (via Filament Plugin)**
 * ✅ Code quality with **RectorPHP**
 * ✅ Authentication with default seeded admin
 
@@ -75,9 +76,9 @@ return [
         'warning' => Color::Amber,
     ],
 
-    'enable_login'       => env('FILAMENT_ENABLE_LOGIN', true),
-    'enable_registration'=> env('FILAMENT_ENABLE_REGISTER', false),
-    'enable_profile'     => env('FILAMENT_ENABLE_PROFILE', false),
+    'enable_login'        => env('FILAMENT_ENABLE_LOGIN', true),
+    'enable_registration' => env('FILAMENT_ENABLE_REGISTER', false),
+    'enable_profile'      => env('FILAMENT_ENABLE_PROFILE', false),
 ];
 ```
 
@@ -121,6 +122,33 @@ class RoleSeeder extends Seeder
 ```
 
 > ✅ You can expand this by adding more roles and permissions via the Filament UI or custom seeders.
+
+---
+
+## 🛠️ Manage Config from Admin Panel (Inerba DB Config Plugin)
+
+This starter kit includes the [**Filament DB Config Plugin**](https://filamentphp.com/plugins/inerba-db-config) by **Inerba**, which allows you to **store application config settings in the database** and manage them from the admin panel.
+
+### 🔧 Features
+
+* Create configuration keys and values dynamically
+* Group and categorize settings
+* Easily retrieve values via `config('db-config.key')`
+* No code deployment needed for config changes
+
+### 🧩 Usage
+
+After installing and publishing the plugin:
+
+1. Visit `/dash/db-config` in your Filament panel
+2. Add new config entries (e.g. `site.name`, `maintenance_mode`, etc.)
+3. Use in code like so:
+
+```php
+$value = config('db-config.site.name');
+```
+
+> ℹ️ Useful for managing site-wide settings, feature toggles, or any admin-editable config.
 
 ---
 
@@ -172,7 +200,7 @@ vendor/bin/rector
 ## 🚀 Installation
 
 ```bash
-git clone https://github.com/your-org/admin-starter-kit.git your-project
+git clone https://github.com/idevakk/starter-kit.git your-project
 cd your-project
 
 composer install
@@ -196,20 +224,21 @@ Visit: [http://localhost:8000/dash](http://localhost:8000/dash) (or your configu
 
 ```
 ├── config/
-│   ├── filament.php           # Filament core settings
-│   ├── filament-php.php       # UI theming + custom toggles
-│   ├── activitylog.php        # Activity log config
+│   ├── filament.php            # Filament core settings
+│   ├── filament-php.php        # UI theming + custom toggles
+│   ├── activitylog.php         # Activity log config
+│   └── db-config.php           # (Optional) Plugin config
 ├── database/
 │   └── seeders/FilamentAdminSeeder.php
 │   └── seeders/RoleSeeder.php
-├── rector.php                 # Rector config
+├── rector.php                  # Rector config
 ```
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome. Feel free to fork, submit issues or create pull requests.
+Contributions are welcome. Feel free to fork, submit issues, or create pull requests.
 
 ---
 
@@ -228,6 +257,7 @@ Open-sourced under the [MIT license](LICENSE).
 * [Spatie Activity Log](https://spatie.be/docs/laravel-activitylog)
 * [Filament Log Viewer](https://github.com/ryangjchandler/filament-log)
 * [Filament Mail Viewer](https://github.com/ryangjchandler/filament-mail)
+* [Inerba DB Config Plugin](https://filamentphp.com/plugins/inerba-db-config)
 * [RectorPHP](https://getrector.com)
 
 ---
