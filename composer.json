@@ -10,6 +10,7 @@
         "backstage/filament-mails": "^3.0",
         "filament/filament": "~4.0",
         "gboquizosanchez/filament-log-viewer": "^2.1",
+        "inerba/filament-db-config": "^1.1",
         "jacobtims/filament-logger": "^1.0",
         "laravel/fortify": "^1.30",
         "laravel/framework": "^12.0",
