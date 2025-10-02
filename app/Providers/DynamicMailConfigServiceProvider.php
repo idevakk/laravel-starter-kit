@@ -14,11 +14,11 @@ class DynamicMailConfigServiceProvider extends ServiceProvider
 
     // Mail configuration properties
     private string $mailDriver;
-    private ?string $mailScheme;
+    private ?string $mailScheme = null;
     private string $mailHost;
     private string $mailPort;
-    private ?string $mailUsername;
-    private ?string $mailPassword;
+    private ?string $mailUsername = null;
+    private ?string $mailPassword = null;
     private string $mailFromAddress;
     private string $mailFromName;
     private int $mailTimeout;
@@ -65,9 +65,10 @@ class DynamicMailConfigServiceProvider extends ServiceProvider
     private function loadConfiguration(): void
     {
         try {
-            $this->mailConfig = DbConfig::getGroup('mail') ?: [];
+            $group = DbConfig::getGroup('mail');
+            $this->mailConfig = (in_array($group, [null, []], true)) ? [] : $group;
             $this->mailConfig['app_url'] = db_config('website.site_url') ?? env('APP_URL', 'http://localhost');
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             Log::warning('Database mail configuration unavailable; falling back to env values.');
             $this->mailConfig = ['app_url' => env('APP_URL', 'http://localhost')];
         }
@@ -83,7 +84,7 @@ class DynamicMailConfigServiceProvider extends ServiceProvider
         $this->mailFromName = $this->getConfig('mail_from_name', env('MAIL_FROM_NAME', 'Example'));
         $this->mailFromAddress = $this->getConfig('mail_from_address', env('MAIL_FROM_ADDRESS', 'hello@example.com'));
         $this->mailTimeout = $this->getConfig('mail_timeout', env('MAIL_TIMEOUT', 15));
-        $this->mailEHLO = $this->getConfig('mail_ehlo', env('MAIL_EHLO', parse_url((string) $this->appUrl, PHP_URL_HOST)));
+        $this->mailEHLO = $this->getConfig('mail_ehlo', env('MAIL_EHLO', parse_url($this->appUrl, PHP_URL_HOST)));
     }
 
     private function getConfig(string $key, $default = null)

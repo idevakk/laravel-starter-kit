@@ -10,17 +10,17 @@ class ColorHelper
     /**
      * Convert RGB to OKLab color space.
      */
-    public static function rgbToOklab($r, $g, $b)
+    public static function rgbToOklab($r, $g, $b): array
     {
         // Normalize RGB values to the range [0, 1]
-        $r = $r / 255;
-        $g = $g / 255;
-        $b = $b / 255;
+        $r /= 255;
+        $g /= 255;
+        $b /= 255;
 
         // Linearize RGB values
-        $r = $r <= 0.04045 ? $r / 12.92 : pow(($r + 0.055) / 1.055, 2.4);
-        $g = $g <= 0.04045 ? $g / 12.92 : pow(($g + 0.055) / 1.055, 2.4);
-        $b = $b <= 0.04045 ? $b / 12.92 : pow(($b + 0.055) / 1.055, 2.4);
+        $r = $r <= 0.04045 ? $r / 12.92 : (($r + 0.055) / 1.055) ** 2.4;
+        $g = $g <= 0.04045 ? $g / 12.92 : (($g + 0.055) / 1.055) ** 2.4;
+        $b = $b <= 0.04045 ? $b / 12.92 : (($b + 0.055) / 1.055) ** 2.4;
 
         // Convert to linear light values
         $l = 0.4122214708 * $r + 0.5363325363 * $g + 0.0514459929 * $b;
@@ -28,9 +28,9 @@ class ColorHelper
         $s = 0.0883024619 * $r + 0.2817188376 * $g + 0.6299787005 * $b;
 
         // Apply the OKLab transformation
-        $l_ = pow($l, 1 / 3);
-        $m_ = pow($m, 1 / 3);
-        $s_ = pow($s, 1 / 3);
+        $l_ = $l ** (1 / 3);
+        $m_ = $m ** (1 / 3);
+        $s_ = $s ** (1 / 3);
 
         $L = 0.2104542553 * $l_ + 0.7936177850 * $m_ - 0.0040720468 * $s_;
         $a = 1.9779984951 * $l_ - 2.4285922050 * $m_ + 0.4505937099 * $s_;
@@ -42,7 +42,7 @@ class ColorHelper
     /**
      * Convert OKLab to OKLCH color space.
      */
-    public static function oklabToOklch($L, $a, $b)
+    public static function oklabToOklch($L, $a, $b): array
     {
         $C = sqrt($a * $a + $b * $b); // Chroma
         $h = atan2($b, $a); // Hue in radians
@@ -88,7 +88,7 @@ class ColorHelper
      */
     public static function generateOklchFromRGBShades(string $rgbString): ?string
     {
-        if (!preg_match('/rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)/', $rgbString, $matches)) {
+        if (in_array(preg_match('/rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)/', $rgbString, $matches), [0, false], true)) {
             return null;
         }
 
@@ -136,13 +136,13 @@ class ColorHelper
     {
         try {
             $panelColor = [];
-            if ($panelId != "") {
+            if ($panelId !== "") {
                 $colors = db_config('panel.panel_color_'.$panelId) ?? [];
                 $isRGB = db_config('panel.panel_color_isRGB_'.$panelId) ?? false;
                 foreach ($colors as $color) {
                     $colorName = $color['panel_color_name_'.$panelId];
                     $colorRGB = $color['panel_color_'.$panelId];
-                    $colorOKLCH = json_decode($color['panel_color_shade_'.$panelId], true);
+                    $colorOKLCH = json_decode((string) $color['panel_color_shade_'.$panelId], true);
                     $panelColor[$colorName] = $isRGB ? $colorRGB : $colorOKLCH;
                 }
             }

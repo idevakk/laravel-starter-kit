@@ -124,9 +124,7 @@ class MailSettings extends AbstractPageSettings
         ];
 
         // Check for missing or empty required fields
-        $missingFields = collect($requiredFields)->filter(function ($field) use ($settings) {
-            return empty($settings[$field]);
-        });
+        $missingFields = collect($requiredFields)->filter(fn($field): bool => empty($settings[$field]));
 
         if ($missingFields->isNotEmpty()) {
             Notification::make()
@@ -140,7 +138,7 @@ class MailSettings extends AbstractPageSettings
             $transport = new \Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport(
                 $settings['mail_host'],
                 (int) $settings['mail_port'],
-                strtolower($settings['mail_encryption']) === 'ssl'
+                strtolower((string) $settings['mail_encryption']) === 'ssl'
             );
 
             $transport->setUsername($settings['mail_username']);

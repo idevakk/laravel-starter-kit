@@ -49,7 +49,7 @@ class DashPanelProvider extends PanelProvider
     private bool $panelBrandLogoShow;
     private string $panelBrandLogoLight;
     private string $panelBrandLogoDark;
-    private ?string $panelBrandLogoHeight;
+    private ?string $panelBrandLogoHeight = null;
     private string $panelFavicon;
 
     // MFA configuration properties
@@ -108,7 +108,10 @@ class DashPanelProvider extends PanelProvider
                 FilamentLogViewerPlugin::make(),
                 FilamentMailsPlugin::make()->canManageMails(function (): bool {
                     $user = Auth::user();
-                    return $user->hasRole('admin') || $user->hasPermissionTo('manage mails');
+                    if ($user->hasRole('admin')) {
+                        return true;
+                    }
+                    return (bool) $user->hasPermissionTo('manage mails');
                 }),
             ])
             ->routes(fn() => FilamentMails::routes());
@@ -121,10 +124,10 @@ class DashPanelProvider extends PanelProvider
     private function loadConfiguration(): void
     {
         try {
-            $this->panelConfig = DbConfig::getGroup('panel');
+            $group = DbConfig::getGroup('panel');
+            $this->panelConfig = (in_array($group, [null, []], true)) ? [] : $group;
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            $this->panelConfig = [];
         }
 
         // Load basic panel configuration
@@ -166,14 +169,14 @@ class DashPanelProvider extends PanelProvider
     private function applyConditionalConfiguration(Panel $panel): void
     {
         $actions = [
-            'login' => [$this->panelLogin, fn() => $panel->login()],
-            'register' => [$this->panelRegistration, fn() => $panel->registration()],
-            'profile' => [$this->panelProfile, fn() => $panel->profile()],
-            'spa' => [$this->panelSPA, fn() => $panel
+            'login' => [$this->panelLogin, fn(): \Filament\Panel => $panel->login()],
+            'register' => [$this->panelRegistration, fn(): \Filament\Panel => $panel->registration()],
+            'profile' => [$this->panelProfile, fn(): \Filament\Panel => $panel->profile()],
+            'spa' => [$this->panelSPA, fn(): \Filament\Panel => $panel
                 ->spa(hasPrefetching: $this->panelSPAPrefetch)
                 ->spaUrlExceptions(exceptions: $this->panelSPAExceptions)
             ],
-            'logo' => [$this->panelBrandLogoShow, fn() => $panel
+            'logo' => [$this->panelBrandLogoShow, fn(): \Filament\Panel => $panel
                 ->brandLogo(asset($this->panelBrandLogoLight))
                 ->darkModeBrandLogo(asset($this->panelBrandLogoDark))
                 ->brandLogoHeight($this->panelBrandLogoHeight)
@@ -181,7 +184,9 @@ class DashPanelProvider extends PanelProvider
         ];
 
         foreach ($actions as [$condition, $callback]) {
-            $condition && $callback();
+            if ($condition) {
+                $callback();
+            }
         }
 
         $this->configureMFA($panel);

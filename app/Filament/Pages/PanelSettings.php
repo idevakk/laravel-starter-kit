@@ -99,8 +99,8 @@ class PanelSettings extends AbstractPageSettings
                         ->required(),
                     FileUpload::make('panel_logo_light_'.$this->getPanelID())
                         ->label('Panel Logo')
-                        ->visible(fn($get) => $get('panel_show_logo_'.$this->getPanelID()) === 'show')
-                        ->required(fn($get) => $get('panel_show_logo_'.$this->getPanelID()) === 'show')
+                        ->visible(fn($get): bool => $get('panel_show_logo_'.$this->getPanelID()) === 'show')
+                        ->required(fn($get): bool => $get('panel_show_logo_'.$this->getPanelID()) === 'show')
                         ->image()
                         ->disk('public')
                         ->visibility('public')
@@ -110,8 +110,8 @@ class PanelSettings extends AbstractPageSettings
 
                     FileUpload::make('panel_logo_dark_'.$this->getPanelID())
                         ->label('Panel Dark Mode Logo')
-                        ->visible(fn($get) => $get('panel_show_logo_'.$this->getPanelID()) === 'show')
-                        ->required(fn($get) => $get('panel_show_logo_'.$this->getPanelID()) === 'show')
+                        ->visible(fn($get): bool => $get('panel_show_logo_'.$this->getPanelID()) === 'show')
+                        ->required(fn($get): bool => $get('panel_show_logo_'.$this->getPanelID()) === 'show')
                         ->image()
                         ->disk('public')
                         ->visibility('public')
@@ -123,8 +123,8 @@ class PanelSettings extends AbstractPageSettings
                         ->label('Panel Logo Height')
                         ->helperText('Use value like `30px`, `2rem`, `20%`, etc. This value applies as style attribute - height: 30px;')
                         ->columnSpanFull()
-                        ->visible(fn($get) => $get('panel_show_logo_'.$this->getPanelID()) === 'show')
-                        ->required(fn($get) => $get('panel_show_logo_'.$this->getPanelID()) === 'show'),
+                        ->visible(fn($get): bool => $get('panel_show_logo_'.$this->getPanelID()) === 'show')
+                        ->required(fn($get): bool => $get('panel_show_logo_'.$this->getPanelID()) === 'show'),
 
                     FileUpload::make('panel_favicon_'.$this->getPanelID())
                         ->label('Panel Favicon')
@@ -172,7 +172,7 @@ class PanelSettings extends AbstractPageSettings
                                 ->rgb()
                                 ->regex('/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/')
                                 ->live()
-                                ->afterStateUpdated(function ($state, callable $set) {
+                                ->afterStateUpdated(function ($state, callable $set): void {
                                     $shades = ColorHelper::generateOklchFromRGBShades($state);
                                     $set('panel_color_shade_' . $this->getPanelID(), $shades ?? '// Invalid RGB');
                                     })
@@ -191,9 +191,7 @@ class PanelSettings extends AbstractPageSettings
                     Toggle::make('panel_default')
                         ->label('Is this default panel?')
                         ->helperText('Toggle `ON` to set this panel as default')
-                        ->dehydrateStateUsing(function (bool $state, $get) {
-                            return $state ? $get('panel_id') : null;
-                        })
+                        ->dehydrateStateUsing(fn(bool $state, $get) => $state ? $get('panel_id') : null)
 
 
                 ])->columns(2),
@@ -238,38 +236,38 @@ class PanelSettings extends AbstractPageSettings
                     TextInput::make('panel_mfa_app_brand_name_'.$this->getPanelID())
                         ->label('MFA Authenticator Brand Name')
                         ->helperText('Optional: Leave to use app name as authenticator brand name')
-                        ->visible(fn($get) => $get('panel_enable_mfa_'.$this->getPanelID()) && $get('panel_mfa_type_'.$this->getPanelID()) === 'app'),
+                        ->visible(fn($get): bool => $get('panel_enable_mfa_'.$this->getPanelID()) && $get('panel_mfa_type_'.$this->getPanelID()) === 'app'),
 
                     Toggle::make('panel_mfa_app_recoverable_'.$this->getPanelID())
                         ->label('MFA Authenticator Recoverable')
                         ->live()
-                        ->visible(fn($get) => $get('panel_enable_mfa_'.$this->getPanelID()) && $get('panel_mfa_type_'.$this->getPanelID()) === 'app'),
+                        ->visible(fn($get): bool => $get('panel_enable_mfa_'.$this->getPanelID()) && $get('panel_mfa_type_'.$this->getPanelID()) === 'app'),
 
                     Toggle::make('panel_mfa_app_recovery_code_regeneratable_'.$this->getPanelID())
                         ->label('Allow to regenerate recovery code')
                         ->live()
-                        ->visible(fn($get) => $get('panel_enable_mfa_'.$this->getPanelID()) && $get('panel_mfa_app_recoverable_'.$this->getPanelID()) && $get('panel_mfa_type_'.$this->getPanelID()) === 'app'),
+                        ->visible(fn($get): bool => $get('panel_enable_mfa_'.$this->getPanelID()) && $get('panel_mfa_app_recoverable_'.$this->getPanelID()) && $get('panel_mfa_type_'.$this->getPanelID()) === 'app'),
 
                     TextInput::make('panel_mfa_app_recovery_code_count_'.$this->getPanelID())
                         ->label('MFA Authenticator Recovery Code Count')
                         ->numeric()
                         ->minValue(8)
                         ->maxValue(16)
-                        ->visible(fn($get) => $get('panel_enable_mfa_'.$this->getPanelID()) && $get('panel_mfa_app_recoverable_'.$this->getPanelID()) && $get('panel_mfa_type_'.$this->getPanelID()) === 'app'),
+                        ->visible(fn($get): bool => $get('panel_enable_mfa_'.$this->getPanelID()) && $get('panel_mfa_app_recoverable_'.$this->getPanelID()) && $get('panel_mfa_type_'.$this->getPanelID()) === 'app'),
 
                     TextInput::make('panel_mfa_app_code_window_'.$this->getPanelID())
                         ->label('MFA Authenticator Code Window')
                         ->numeric()
                         ->minValue(1)
                         ->maxValue(8)
-                        ->visible(fn($get) => $get('panel_enable_mfa_'.$this->getPanelID()) && $get('panel_mfa_type_'.$this->getPanelID()) === 'app'),
+                        ->visible(fn($get): bool => $get('panel_enable_mfa_'.$this->getPanelID()) && $get('panel_mfa_type_'.$this->getPanelID()) === 'app'),
 
                     TextInput::make('panel_mfa_email_code_expiry_'.$this->getPanelID())
                         ->label('MFA Email Expiry (in minutes)')
                         ->numeric()
                         ->minValue(1)
                         ->maxValue(8)
-                        ->visible(fn($get) => $get('panel_enable_mfa_'.$this->getPanelID()) && $get('panel_mfa_type_'.$this->getPanelID()) === 'email'),
+                        ->visible(fn($get): bool => $get('panel_enable_mfa_'.$this->getPanelID()) && $get('panel_mfa_type_'.$this->getPanelID()) === 'email'),
 
                     Select::make('panel_mfa_is_required_'.$this->getPanelID())
                         ->label('MFA Is Required')
