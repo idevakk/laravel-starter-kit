@@ -59,7 +59,7 @@ class ColorHelper
     /**
      * Convert RGB to OKLCH color space.
      */
-    public static function rgbToOklch($r, $g, $b)
+    public static function rgbToOklch($r, $g, $b): array
     {
         $oklab = self::rgbToOklab($r, $g, $b);
         return self::oklabToOklch($oklab['L'], $oklab['a'], $oklab['b']);
