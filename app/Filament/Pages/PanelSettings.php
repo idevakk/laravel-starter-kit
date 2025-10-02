@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Helper\ColorHelper;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
@@ -13,6 +14,7 @@ use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
 use Inerba\DbConfig\AbstractPageSettings;
 use Filament\Schemas\Components;
 use Filament\Schemas\Schema;
@@ -71,6 +73,25 @@ class PanelSettings extends AbstractPageSettings
             'panel_mfa_email_code_expiry_'.$this->getPanelID() => 2,
             'panel_mfa_is_required_'.$this->getPanelID() => 'no',
 
+        ];
+    }
+
+    public function getHeaderActions(): array
+    {
+        return [
+            Action::make('filament-optimize')
+                ->label('Optimize Filament')
+                ->color('gray')
+                ->icon('heroicon-o-paper-airplane')
+                ->action(fn() => $this->filamentOptimize()),
+
+            Action::make('filament-optimize-clear')
+                ->label('Clear Optimized Files')
+                ->color('danger')
+                ->icon('heroicon-o-trash')
+                ->action(fn() => $this->filamentOptimizeClear()),
+
+            ...parent::getHeaderActions(),
         ];
     }
 
@@ -282,5 +303,38 @@ class PanelSettings extends AbstractPageSettings
                 ])->columns(2)
             ])
             ->statePath('data');
+    }
+
+    private function filamentOptimize(): void
+    {
+        try {
+            \Artisan::queue('filament:optimize');
+            Notification::make()
+                ->title('Filament optimization successful!')
+                ->success()
+                ->send();
+        } catch (\Exception $e) {
+            \Log::error('Filament optimization failed', ['exception' => $e->getMessage()]);
+            Notification::make()
+                ->title('Filament optimization failed: ' . $e->getMessage())
+                ->danger()
+                ->send();
+        }
+    }
+    private function filamentOptimizeClear(): void
+    {
+        try {
+            \Artisan::queue('filament:optimize-clear');
+            Notification::make()
+                ->title('Cache files cleared successful!')
+                ->success()
+                ->send();
+        } catch (\Exception $e) {
+            \Log::error('Filament optimize clear failed', ['exception' => $e->getMessage()]);
+            Notification::make()
+                ->title('Failed to clear cache files: ' . $e->getMessage())
+                ->danger()
+                ->send();
+        }
     }
 }
