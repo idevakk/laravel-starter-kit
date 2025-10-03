@@ -124,7 +124,7 @@ class DashPanelProvider extends PanelProvider
     private function loadConfiguration(): void
     {
         try {
-            $group = DbConfig::getGroup('panel');
+            $group = DbConfig::getGroup('panel') ??  [];
             $this->panelConfig = (in_array($group, [null, []], true)) ? [] : $group;
         } catch (\Exception $e) {
             Log::error($e->getMessage());

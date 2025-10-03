@@ -65,7 +65,7 @@ class DynamicMailConfigServiceProvider extends ServiceProvider
     private function loadConfiguration(): void
     {
         try {
-            $group = DbConfig::getGroup('mail');
+            $group = DbConfig::getGroup('mail') ??  [];
             $this->mailConfig = (in_array($group, [null, []], true)) ? [] : $group;
             $this->mailConfig['app_url'] = db_config('website.site_url') ?? env('APP_URL', 'http://localhost');
         } catch (\Throwable) {
