@@ -1,13 +1,9 @@
 <?php
 
 use App\Providers\AppServiceProvider;
-use App\Providers\DynamicMailConfigServiceProvider;
-use App\Providers\Filament\DashPanelProvider;
-use App\Providers\FortifyServiceProvider;
+use App\Providers\Filament\AdminPanelProvider;
 
 return [
     AppServiceProvider::class,
-    DynamicMailConfigServiceProvider::class,
-    DashPanelProvider::class,
-    FortifyServiceProvider::class,
+    AdminPanelProvider::class,
 ];
