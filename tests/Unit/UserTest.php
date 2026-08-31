@@ -6,9 +6,9 @@ use App\Enums\Role;
 use App\Models\User;
 use Filament\Panel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('user can get initials', function () {
     $user = new User(['name' => 'John Doe']);
@@ -34,7 +34,7 @@ test('user can access filament panel only if admin', function () {
     $admin = new User(['role' => Role::Admin]);
     $user = new User(['role' => Role::User]);
 
-    $panel = new Panel();
+    $panel = new Panel;
 
     expect($admin->canAccessPanel($panel))->toBeTrue()
         ->and($user->canAccessPanel($panel))->toBeFalse();
