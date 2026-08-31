@@ -6,8 +6,10 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('components.layouts.app')]
 class Profile extends Component
 {
     public string $name = '';
@@ -19,8 +21,11 @@ class Profile extends Component
      */
     public function mount(): void
     {
-        $this->name = Auth::user()->name;
-        $this->email = Auth::user()->email;
+        $user = Auth::user();
+        assert($user instanceof User);
+
+        $this->name = $user->name;
+        $this->email = $user->email;
     }
 
     /**
@@ -29,6 +34,7 @@ class Profile extends Component
     public function updateProfileInformation(): void
     {
         $user = Auth::user();
+        assert($user instanceof User);
 
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -60,6 +66,7 @@ class Profile extends Component
     public function resendVerificationNotification(): void
     {
         $user = Auth::user();
+        assert($user instanceof User);
 
         if ($user->hasVerifiedEmail()) {
             $this->redirectIntended(default: route('dashboard', absolute: false));
