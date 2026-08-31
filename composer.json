@@ -75,9 +75,9 @@
         ],
         "lint": "./vendor/bin/pint --test",
         "refactor": "./vendor/bin/rector --dry-run",
-        "types": "./vendor/bin/phpstan analyse",
+        "types": "./vendor/bin/phpstan analyse -a vendor/larastan/larastan/bootstrap.php",
         "test:type-coverage": "./vendor/bin/pest --type-coverage --min=100",
-        "test:unit": "./vendor/bin/pest --parallel",
+        "test:unit": "./vendor/bin/pest",
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"
