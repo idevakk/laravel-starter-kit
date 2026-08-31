@@ -2,12 +2,15 @@
 
 namespace App\Livewire\Settings;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('components.layouts.app')]
 class Password extends Component
 {
     public string $current_password = '';
@@ -32,7 +35,10 @@ class Password extends Component
             throw $e;
         }
 
-        Auth::user()->update([
+        $user = Auth::user();
+        assert($user instanceof User);
+
+        $user->update([
             'password' => Hash::make($validated['password']),
         ]);
 
