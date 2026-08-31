@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
 
-test('user can get initials', function () {
+test('user can get initials', function (): void {
     $user = new User(['name' => 'John Doe']);
     expect($user->initials())->toBe('JD');
 
@@ -18,7 +18,7 @@ test('user can get initials', function () {
     expect($user2->initials())->toBe('J');
 });
 
-test('user can check if admin', function () {
+test('user can check if admin', function (): void {
     $user = new User(['role' => Role::Admin]);
     expect($user->isAdmin())->toBeTrue()
         ->and($user->hasRole(Role::Admin))->toBeTrue()
@@ -30,7 +30,7 @@ test('user can check if admin', function () {
         ->and($user2->hasRole(Role::Admin))->toBeFalse();
 });
 
-test('user can access filament panel only if admin', function () {
+test('user can access filament panel only if admin', function (): void {
     $admin = new User(['role' => Role::Admin]);
     $user = new User(['role' => Role::User]);
 
@@ -40,7 +40,7 @@ test('user can access filament panel only if admin', function () {
         ->and($user->canAccessPanel($panel))->toBeFalse();
 });
 
-test('user can manage app authentication secret', function () {
+test('user can manage app authentication secret', function (): void {
     $user = User::factory()->create();
 
     expect($user->getAppAuthenticationSecret())->toBeNull();
@@ -49,12 +49,12 @@ test('user can manage app authentication secret', function () {
     expect($user->getAppAuthenticationSecret())->toBe('secret123');
 });
 
-test('user can get app authentication holder name', function () {
+test('user can get app authentication holder name', function (): void {
     $user = new User(['email' => 'test@example.com']);
     expect($user->getAppAuthenticationHolderName())->toBe('test@example.com');
 });
 
-test('user can manage app authentication recovery codes', function () {
+test('user can manage app authentication recovery codes', function (): void {
     $user = User::factory()->create();
 
     expect($user->getAppAuthenticationRecoveryCodes())->toBeNull();
@@ -65,7 +65,7 @@ test('user can manage app authentication recovery codes', function () {
     expect($user->getAppAuthenticationRecoveryCodes())->toBe($codes);
 });
 
-test('user can manage email authentication', function () {
+test('user can manage email authentication', function (): void {
     $user = User::factory()->create();
 
     expect($user->hasEmailAuthentication())->toBeFalse();
